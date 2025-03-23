@@ -1,12 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Filtre par type de restaurant -->
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filtres par type de restaurant"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"/>
+
+    <CheckBox
+        android:id="@+id/filter_cafe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gestion des préférences"
-        android:textSize="18sp"/>
+        android:text="Café" />
+
+    <CheckBox
+        android:id="@+id/filter_pub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pub" />
+
+    <CheckBox
+        android:id="@+id/filter_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bar" />
+
+    <CheckBox
+        android:id="@+id/filter_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restaurant" />
+
 </LinearLayout>

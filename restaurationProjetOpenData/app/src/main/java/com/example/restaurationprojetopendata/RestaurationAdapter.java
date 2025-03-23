@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurationAdapter extends BaseAdapter {
     private final ArrayList<Restaurant> list; // Liste des restaurants
@@ -102,6 +103,15 @@ public class RestaurationAdapter extends BaseAdapter {
         holder.tvType.setTypeface(ResourcesCompat.getFont(context, R.font.policetypeetcuisine));
 
         return convertView;
+    }
+
+    public void updateList(List<Restaurant> newRestaurants) {
+        // Remplacer la liste existante par la nouvelle liste
+        list.clear();
+        list.addAll(newRestaurants);
+
+        // Notifier l'adapter que les données ont changé, pour que l'affichage soit mis à jour
+        notifyDataSetChanged();
     }
 
     private boolean isFavorite(Restaurant restaurant) {
