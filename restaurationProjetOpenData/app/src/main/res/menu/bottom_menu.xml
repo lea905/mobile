@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_lst"
+        android:enabled="true"
+        android:icon="@drawable/lst"
+        android:title="List" />
+
+    <item
+        android:id="@+id/nav_map"
+        android:enabled="true"
+        android:icon="@drawable/carte"
+        android:state_selected="true"
+        android:title="Map" />
+
+    <item
+        android:id="@+id/nav_fav"
+        android:enabled="true"
+        android:icon="@drawable/favoris"
+        android:title="Favoris" />
+</menu>

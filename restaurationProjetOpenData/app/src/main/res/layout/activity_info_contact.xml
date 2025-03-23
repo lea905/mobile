@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tvNomResto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textSize="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTypeCuisine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNomResto" />
+
+
+    <TextView
+        android:id="@+id/tvHoraire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="28dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTypeCuisine" />
+
+    <ImageView
+        android:id="@+id/ivHoraire"
+        android:layout_width="40dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvHoraire"
+        app:layout_constraintTop_toBottomOf="@+id/tvTypeCuisine"
+        app:srcCompat="@drawable/horaire" />
+
+    <ImageView
+        android:id="@+id/ivWeb"
+        android:layout_width="40dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivHoraire"
+        app:srcCompat="@drawable/web" />
+
+    <TextView
+        android:id="@+id/tvWeb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/ivWeb"
+        app:layout_constraintTop_toBottomOf="@+id/tvHoraire" />
+
+    <TextView
+        android:id="@+id/tvTel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/ivTel"
+        app:layout_constraintTop_toBottomOf="@+id/tvWeb" />
+
+    <TextView
+        android:id="@+id/tvAddresse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/ivAddresse"
+        app:layout_constraintTop_toBottomOf="@+id/tvTel" />
+
+    <ImageView
+        android:id="@+id/ivAddresse"
+        android:layout_width="40dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivTel"
+        app:srcCompat="@drawable/adresse" />
+
+    <ImageView
+        android:id="@+id/ivTel"
+        android:layout_width="40dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivWeb"
+        app:srcCompat="@drawable/tel_removebg_preview" />
+
+    <ImageView
+        android:id="@+id/ivAEmporter"
+        android:layout_width="47dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="328dp"
+        app:layout_constraintStart_toEndOf="@+id/ivLivraison"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivAccesHandicape"
+        android:layout_width="47dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginBottom="408dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivVegan"
+        android:layout_width="47dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+        app:layout_constraintStart_toEndOf="@+id/ivVegetarien"
+        app:layout_constraintTop_toBottomOf="@+id/tvHoraire"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivVegetarien"
+        android:layout_width="47dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="116dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivHoraire"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivLivraison"
+        android:layout_width="47dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="328dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

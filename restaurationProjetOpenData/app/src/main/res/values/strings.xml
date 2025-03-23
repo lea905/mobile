@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">restauration</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="open_drawer">Ouvrir le menu</string>
+    <string name="close_drawer">Fermer le menu</string>
+
+
+</resources>
