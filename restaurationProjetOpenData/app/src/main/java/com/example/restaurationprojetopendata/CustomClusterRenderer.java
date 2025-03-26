@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
@@ -17,8 +18,8 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<RestaurantClus
 
     @Override
     protected void onBeforeClusterItemRendered(RestaurantClusterItem item, MarkerOptions markerOptions) {
-        // Personnaliser la couleur du marqueur
         markerOptions.icon(getMarkerColor(item));
+        markerOptions.snippet(item.getSnippet());
     }
 
     private BitmapDescriptor getMarkerColor(RestaurantClusterItem item) {
@@ -47,6 +48,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<RestaurantClus
         Color.colorToHSV(color, hsv);
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
+
 
 
 }

@@ -2,6 +2,7 @@ package com.example.restaurationprojetopendata;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -38,9 +39,9 @@ public class ListFragment extends Fragment {
     private RestaurationAdapter adapter;
     private ListView listView;
     private ProgressDialog progressDialog;
-    private boolean isLoading = false; // Évite les appels multiples simultanés
+    private boolean isLoading = false;
     ArrayList<Restaurant> favoriteRestaurants = new ArrayList<>();
-
+    private List<Restaurant> restaurantList = new ArrayList<>();
 
     public ListFragment() {
         // Constructeur vide requis
@@ -93,6 +94,9 @@ public class ListFragment extends Fragment {
                         adapter = new RestaurationAdapter(getContext(), list);
                         listView.setAdapter(adapter);
 
+                        // Appliquer les filtres après avoir ajouté les restaurants à la liste
+                        filterRestaurants();
+
                         // Mettre à jour la liste des restaurants dans MainActivity
                         if (getActivity() instanceof MainActivity) {
                             ((MainActivity) getActivity()).setRestaurants(list);
@@ -117,7 +121,6 @@ public class ListFragment extends Fragment {
             Intent intent = new Intent(getContext(), infoRestaurationActivity.class);
             Restaurant restaurant = list.get(position);
 
-            // Passer les données du restaurant à l'Activity
             intent.putExtra("nom", restaurant.getName() != null ? restaurant.getName() : "Nom inconnu");
             intent.putExtra("type", restaurant.getType() != null ? restaurant.getType() : "Type inconnu");
             intent.putExtra("vegetarien", restaurant.getVegetarian() != null ? restaurant.getVegetarian().toString() : "Non végétarien");
@@ -169,14 +172,12 @@ public class ListFragment extends Fragment {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                // Optionnel pour d'autres optimisations
             }
         });
 
         return rootView;
     }
 
-    // Méthode pour initialiser Retrofit
     private ApiRestaurationService initRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://public.opendatasoft.com/api/")
@@ -186,8 +187,7 @@ public class ListFragment extends Fragment {
         return retrofit.create(ApiRestaurationService.class);
     }
 
-    // Méthode pour charger plus de données
-    private void loadMoreData() {
+   private void loadMoreData() {
         final int pageNumber = list.size() / 20 + 1;
 
         ApiRestaurationService service = initRetrofit();
@@ -196,20 +196,28 @@ public class ListFragment extends Fragment {
         callRestauration.enqueue(new Callback<RestaurationResponse>() {
             @Override
             public void onResponse(Call<RestaurationResponse> call, Response<RestaurationResponse> response) {
+                progressDialog.dismiss(); // Cacher le loader
+
                 if (response.isSuccessful() && response.body() != null) {
                     RestaurationResponse restauration = response.body();
                     List<Restaurant> restaurants = restauration.getRestaurants();
 
                     if (restaurants != null && !restaurants.isEmpty()) {
                         list.addAll(restaurants);
-                        adapter.notifyDataSetChanged();
+
+                        adapter = new RestaurationAdapter(getContext(), list);
+                        listView.setAdapter(adapter);
+
+                        // Appliquer les filtres sur la nouvelle liste de restaurants
+                        filterRestaurants();
+
+
                     } else {
-                        Toast.makeText(getContext(), "Plus de restaurants disponibles", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Aucun restaurant trouvé", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getContext(), "Erreur : " + response.code(), Toast.LENGTH_SHORT).show();
                 }
-                isLoading = false;
             }
 
             @Override
@@ -219,6 +227,7 @@ public class ListFragment extends Fragment {
             }
         });
     }
+
 
     //WIfi/4G
     private ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
@@ -243,7 +252,11 @@ public class ListFragment extends Fragment {
             super.onCapabilitiesChanged(network, networkCapabilities);
             boolean unmetered = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED);
             Log.d("NetworkCallback", "Connexion Wi-Fi ? " + unmetered);
-            Toast.makeText(getContext(), "Connexion Wi-Fi ? " + unmetered, Toast.LENGTH_SHORT).show();
+            if (unmetered) {
+                Toast.makeText(getContext(), "Connexion Wi-Fi", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Connexion 4G", Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -256,4 +269,43 @@ public class ListFragment extends Fragment {
     }
 
 
+    private void filterRestaurants() {
+        boolean filterCafe = getFilterPreference("filter_cafe");
+        boolean filterPub = getFilterPreference("filter_pub");
+        boolean filterBar = getFilterPreference("filter_bar");
+        boolean filterRestaurant = getFilterPreference("filter_restaurant");
+        boolean filterFastFood = getFilterPreference("filter_fastFood");
+        boolean filterIceCream = getFilterPreference("filter_iceCream");
+        boolean filterAll = getFilterPreference("filter_all");
+
+        // Créer une nouvelle liste de restaurants filtrés
+        List<Restaurant> filteredRestaurants = new ArrayList<>();
+
+        for (Restaurant restaurant : list) {
+            if ((filterCafe && "cafe".equals(restaurant.getType())) ||
+                    (filterPub && "pub".equals(restaurant.getType())) ||
+                    (filterBar && "bar".equals(restaurant.getType())) ||
+                    (filterFastFood && "fast_food".equals(restaurant.getType())) ||
+                    (filterIceCream && "ice_cream".equals(restaurant.getType())) ||
+                    (filterAll) ||
+                    (filterRestaurant && "restaurant".equals(restaurant.getType()))) {
+
+                filteredRestaurants.add(restaurant);
+            }
+        }
+
+
+        adapter.updateList(filteredRestaurants);
+    }
+
+    // Méthode pour récupérer la préférence du filtre depuis SharedPreferences
+    private boolean getFilterPreference(String key) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("restaurant_filters", Context.MODE_PRIVATE);
+        return preferences.getBoolean(key, false); // valeur par défaut "false"
+    }
+
+
+    public void updateRestaurants(List<Restaurant> filteredRestaurants) {
+        this.restaurantList = filteredRestaurants;
+    }
 }

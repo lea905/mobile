@@ -8,11 +8,11 @@ public class RestaurantClusterItem implements ClusterItem {
     private final String title;
     private final String type;
 
-
     public RestaurantClusterItem(LatLng position, String title, String type) {
         this.position = position;
         this.title = title;
         this.type = type;
+
     }
 
     @Override
@@ -31,6 +31,7 @@ public class RestaurantClusterItem implements ClusterItem {
 
     @Override
     public String getSnippet() {
-        return null;  // Tu peux ajouter des informations supplémentaires si besoin
+        String res= type;
+        return res;
     }
 }

@@ -38,4 +38,22 @@
         android:layout_height="wrap_content"
         android:text="Restaurant" />
 
+    <CheckBox
+        android:id="@+id/filter_fastFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fast food" />
+
+    <CheckBox
+        android:id="@+id/filter_iceCream"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ice Cream" />
+
+    <CheckBox
+        android:id="@+id/filter_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tout" />
+
 </LinearLayout>

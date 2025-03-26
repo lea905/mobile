@@ -105,14 +105,7 @@ public class RestaurationAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateList(List<Restaurant> newRestaurants) {
-        // Remplacer la liste existante par la nouvelle liste
-        list.clear();
-        list.addAll(newRestaurants);
 
-        // Notifier l'adapter que les données ont changé, pour que l'affichage soit mis à jour
-        notifyDataSetChanged();
-    }
 
     private boolean isFavorite(Restaurant restaurant) {
         MainActivity mainActivity = (MainActivity) context;
@@ -125,6 +118,16 @@ public class RestaurationAdapter extends BaseAdapter {
         }
         return false;
 
+    }
+
+
+    public void updateList(List<Restaurant> newRestaurants) {
+        // Remplacer la liste existante par la nouvelle liste
+        list.clear();
+        list.addAll(newRestaurants);
+
+        // Notifier l'adapter que les données ont changé, pour que l'affichage soit mis à jour
+        notifyDataSetChanged();
     }
 
     // ViewHolder : optimise la gestion des vues pour éviter les appels répétitifs à findViewById()

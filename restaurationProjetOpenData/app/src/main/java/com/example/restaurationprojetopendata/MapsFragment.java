@@ -5,8 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,7 +37,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         if (getArguments() != null) {
             restaurantList = (List<Restaurant>) getArguments().getSerializable("list");
         }
-        // Vérifie si la liste est bien reçue
         if (restaurantList == null) {
             Log.e("MapsFragment", "La liste des restaurants est NULL !");
         } else {
@@ -59,14 +60,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Définir la position centrale de la France (approximativement Paris)
+        // Définir la position centrale de la France (Paris)
         LatLng franceCenter = new LatLng(48.858370, 2.294481);
-        float zoomLevel = 5.5f; // Niveau de zoom pour voir toute la France
+        float zoomLevel = 5.5f;
 
-        // Déplacer la caméra sur la France au démarrage
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(franceCenter, zoomLevel));
 
-        // Appeler la méthode de configuration des clusters
+
         setupClusterManager(mMap);
 
         // Si la liste de restaurants est disponible, recentrer sur le premier restaurant
@@ -94,11 +94,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         if (restaurantList != null) {
             for (Restaurant restaurant : restaurantList) {
                 LatLng position = new LatLng(restaurant.getMetaGeoPoint().getLat(), restaurant.getMetaGeoPoint().getLon());
-                RestaurantClusterItem item = new RestaurantClusterItem(position, restaurant.getName(),restaurant.getType());
-
+                RestaurantClusterItem item = new RestaurantClusterItem(position, restaurant.getName(), restaurant.getType());
                 clusterManager.addItem(item);
             }
         }
+
 
         clusterManager.cluster();
     }

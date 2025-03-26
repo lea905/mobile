@@ -24,12 +24,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 
 
-public class MainActivity extends AppCompatActivity {
-    private List<Restaurant> list = new ArrayList<>(); // Stocke les restaurants
+public class MainActivity extends AppCompatActivity implements PreferencesFragment.OnFilterChangedListener {
+    private List<Restaurant> list = new ArrayList<>(); // Liste des restaurants
     private ArrayList<Restaurant> favorites = new ArrayList<>();
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,28 +41,39 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-// Ajout du bouton pour ouvrir le menu latéral
+        // Ajout du bouton pour ouvrir le menu latéral
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-// Gestion des clics dans le Navigation Drawer
+        // Gestion des clics dans le Navigation Drawer
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.nav_preferences) {
+                    // Créer un nouvel objet PreferencesFragment
+                    PreferencesFragment preferencesFragment = new PreferencesFragment();
+
+                    // Passer la liste des restaurants via un Bundle
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("allRestaurants", (Serializable) list);  // list étant ta liste de restaurants
+                    preferencesFragment.setArguments(bundle);
+
+                    // Remplacer le fragment dans le conteneur
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.frame_container, new PreferencesFragment())
+                            .replace(R.id.frame_container, preferencesFragment)
                             .commit();
+
                 } else if (item.getItemId() == R.id.nav_about) {
                     Toast.makeText(MainActivity.this, "Crée par Léa Barnezet", Toast.LENGTH_SHORT).show();
                 }
+
                 drawerLayout.closeDrawers();
                 return true;
             }
-        });
 
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,14 +82,11 @@ public class MainActivity extends AppCompatActivity {
                 Fragment selectedFragment = null;
 
                 if (item.getItemId() == R.id.nav_lst) {
-                    // Afficher la liste des restaurants
                     selectedFragment = new ListFragment();
-                    // Passer la liste des restaurants au fragment ListFragment via un Bundle
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("restaurants", (Serializable) list);
                     selectedFragment.setArguments(bundle);
                 } else if (item.getItemId() == R.id.nav_map) {
-                    // Vérifier si on a des restaurants avant d'afficher la carte
                     if (list != null && !list.isEmpty()) {
                         MapsFragment mapsFragment = new MapsFragment();
                         Bundle bundle = new Bundle();
@@ -88,29 +95,20 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = mapsFragment;
                     } else {
                         Log.e("pb", "Aucun restaurant à afficher sur la carte");
-                        return false; // Empêche la navigation vers la carte si pas de données
+                        return false; // Empêche la navigation si pas de restaurants
                     }
                 } else if (item.getItemId() == R.id.nav_fav) {
-                    // Créer le fragment des favoris
                     FavorisFragment favorisFragment = new FavorisFragment();
-
-                    // Vérifier si des favoris existent
                     if (favorites != null && !favorites.isEmpty()) {
-                        // Passer les favoris dans les arguments
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("favorites", favorites);
                         favorisFragment.setArguments(bundle);
                         selectedFragment = favorisFragment;
-
-                        Log.e("MainActivity", "Favoris envoyés : " + favorites.size() + " éléments.");
                     } else {
                         Log.e("MainActivity", "Aucun favori à afficher");
                     }
-
                 }
 
-
-                // Remplacer le fragment si ce n'est pas null
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame_container, selectedFragment)
@@ -121,13 +119,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Afficher la liste des restaurants par défaut
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_container, new ListFragment())
                 .commit();
     }
 
-    // Mettre à jour la liste des restaurants
+    @Override
+    public void onFilterChanged(List<Restaurant> filteredRestaurants) {
+        this.list = filteredRestaurants;
+
+        ListFragment listFragment = (ListFragment) getSupportFragmentManager().findFragmentByTag("list_fragment");
+        if (listFragment != null) {
+            listFragment.updateRestaurants(filteredRestaurants);
+        }
+    }
+
+    // Autres méthodes de gestion des restaurants (comme addToFavorites, etc.)
     public void setRestaurants(List<Restaurant> restaurants) {
         this.list = restaurants;
     }
@@ -148,17 +155,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Favorites", restaurant.getName() + " ajouté aux favoris.");
             }
         }
-
-        // Conversion de List<Restaurant> en ArrayList<Restaurant>
-        FavorisFragment favorisFragment = (FavorisFragment) getSupportFragmentManager().findFragmentByTag("favoris_fragment");
-        if (favorisFragment != null) {
-            favorisFragment.updateFavorites(new ArrayList<>(favorites)); // Conversion ici
-        }
     }
 
     public ArrayList<Restaurant> getFavorites() {
-        return favorites; // Retourne la liste des favoris
+        return favorites;
     }
-
-
 }
