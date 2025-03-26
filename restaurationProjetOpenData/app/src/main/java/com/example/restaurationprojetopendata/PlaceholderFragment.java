@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment;
 
 public class PlaceholderFragment extends Fragment {
 
-    public PlaceholderFragment() {
-        // Nécessaire pour le fragment, même si pas besoin de constructeur
-    }
+    public PlaceholderFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

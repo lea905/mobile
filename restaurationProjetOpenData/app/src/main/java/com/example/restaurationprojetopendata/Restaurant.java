@@ -15,8 +15,6 @@ public class Restaurant implements Serializable
 
     }
 
-
-
     @SerializedName("name")
     @Expose
     private String name;

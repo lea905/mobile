@@ -4,22 +4,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 
@@ -36,31 +29,24 @@ public class MainActivity extends AppCompatActivity implements PreferencesFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialisation du DrawerLayout et de la Toolbar
         drawerLayout = findViewById(R.id.drawer_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Ajout du bouton pour ouvrir le menu latéral
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Gestion des clics dans le Navigation Drawer
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.nav_preferences) {
-                    // Créer un nouvel objet PreferencesFragment
-                    PreferencesFragment preferencesFragment = new PreferencesFragment();
-
-                    // Passer la liste des restaurants via un Bundle
-                    Bundle bundle = new Bundle();
+                      PreferencesFragment preferencesFragment = new PreferencesFragment();
+                      Bundle bundle = new Bundle();
                     bundle.putSerializable("allRestaurants", (Serializable) list);  // list étant ta liste de restaurants
                     preferencesFragment.setArguments(bundle);
 
-                    // Remplacer le fragment dans le conteneur
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frame_container, preferencesFragment)
                             .commit();
@@ -95,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements PreferencesFragme
                         selectedFragment = mapsFragment;
                     } else {
                         Log.e("pb", "Aucun restaurant à afficher sur la carte");
-                        return false; // Empêche la navigation si pas de restaurants
+                        return false;
                     }
                 } else if (item.getItemId() == R.id.nav_fav) {
                     FavorisFragment favorisFragment = new FavorisFragment();
@@ -134,8 +120,7 @@ public class MainActivity extends AppCompatActivity implements PreferencesFragme
         }
     }
 
-    // Autres méthodes de gestion des restaurants (comme addToFavorites, etc.)
-    public void setRestaurants(List<Restaurant> restaurants) {
+     public void setRestaurants(List<Restaurant> restaurants) {
         this.list = restaurants;
     }
 

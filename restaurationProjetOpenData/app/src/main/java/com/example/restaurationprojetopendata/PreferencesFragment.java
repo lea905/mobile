@@ -1,6 +1,5 @@
 package com.example.restaurationprojetopendata;
 
-import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,7 +33,7 @@ public class PreferencesFragment extends Fragment {
         void onFilterChanged(List<Restaurant> filteredRestaurants);
     }
 
-    private OnFilterChangedListener listener; // Variable pour l'interface
+    private OnFilterChangedListener listener;
 
     @Override
     public void onAttach(Context context) {
@@ -86,8 +85,7 @@ public class PreferencesFragment extends Fragment {
             filterIceCream.setChecked(filterAll.isChecked());
         });
 
-        // Appeler la méthode de filtrage dès que les préférences sont mises à jour
-        filterRestaurants();
+       filterRestaurants();
 
         return view;
     }
@@ -137,13 +135,6 @@ public class PreferencesFragment extends Fragment {
         if (listener != null) {
             listener.onFilterChanged(filteredRestaurants);
         }
-    }
-
-    private void saveFilterPreference(String key, boolean value) {
-        SharedPreferences preferences = getActivity().getSharedPreferences("restaurant_filters", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(key, value);
-        editor.apply();
     }
 
 }

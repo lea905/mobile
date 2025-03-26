@@ -1,15 +1,12 @@
 package com.example.restaurationprojetopendata;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-
 public class CustomClusterRenderer extends DefaultClusterRenderer<RestaurantClusterItem> {
 
     public CustomClusterRenderer(Context context, GoogleMap map, ClusterManager<RestaurantClusterItem> clusterManager) {
@@ -49,16 +46,4 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<RestaurantClus
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
-
-
 }
-
-/*
-* restaurant : bleu
-* fast_food : rouge
-* cafe : marron clair #462E01
-* pub: orange qui tire vers le marron #DA781B
-* bar: vert
-* ice_cream: jaune pastel #FFF44F
-* default: blanc
-* */

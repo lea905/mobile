@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+
 
 public class infoRestaurationActivity extends AppCompatActivity {
     @Override
@@ -16,10 +15,8 @@ public class infoRestaurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_contact);
 
-        // Récupération des données du contact envoyées via Intent
         String name = getIntent().getStringExtra("nom");
         TextView n = findViewById(R.id.tvNomResto);
-        // Charger la police
         n.setTypeface(ResourcesCompat.getFont(this, R.font.policenomresto));
         n.setText(name);
 
@@ -86,6 +83,6 @@ public class infoRestaurationActivity extends AppCompatActivity {
         adr.setText(adresse);
 
     }
+
+
 }
-//tv.setHeught(0);
-//acc.setVisibility(View.INVISIBLE);

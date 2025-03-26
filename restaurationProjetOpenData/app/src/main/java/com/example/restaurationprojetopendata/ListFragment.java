@@ -3,7 +3,6 @@ package com.example.restaurationprojetopendata;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Icon;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -15,18 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import android.app.ProgressDialog;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,11 +34,9 @@ public class ListFragment extends Fragment {
     private ListView listView;
     private ProgressDialog progressDialog;
     private boolean isLoading = false;
-    ArrayList<Restaurant> favoriteRestaurants = new ArrayList<>();
-    private List<Restaurant> restaurantList = new ArrayList<>();
+   private List<Restaurant> restaurantList = new ArrayList<>();
 
     public ListFragment() {
-        // Constructeur vide requis
     }
 
     public static ListFragment newInstance() {
@@ -55,15 +47,13 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
-        // Afficher le loader
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Chargement des données...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        // Initialiser la ListView
         listView = rootView.findViewById(R.id.lvRestaurant);
-        list = new ArrayList<>(); // Initialisation de la liste pour éviter les erreurs
+        list = new ArrayList<>();
 
         //WIfi/4G
         ConnectivityManager connectivityManager =
@@ -116,7 +106,7 @@ public class ListFragment extends Fragment {
             }
         });
 
-        // GESTION DU CLIC SUR LA LISTE DES RESTAURANTS
+
         listView.setOnItemClickListener((adapterView, view, position, id) -> {
             Intent intent = new Intent(getContext(), infoRestaurationActivity.class);
             Restaurant restaurant = list.get(position);
@@ -141,16 +131,14 @@ public class ListFragment extends Fragment {
         listView.setOnItemLongClickListener((adapterView, view, position, id) -> {
             Restaurant restaurant = list.get(position);
 
-            // Ajout du restaurant aux favoris dans MainActivity
             MainActivity mainActivity = (MainActivity) getActivity();
             if (mainActivity != null) {
-                mainActivity.addToFavorites(restaurant); // Ajouter à la liste des favoris de MainActivity
+                mainActivity.addToFavorites(restaurant);
             }
 
-            // Mettre à jour l'étoile du restaurant dans la vue
-            RestaurationAdapter adapter = (RestaurationAdapter) listView.getAdapter();
+             RestaurationAdapter adapter = (RestaurationAdapter) listView.getAdapter();
             if (adapter != null) {
-                adapter.notifyDataSetChanged(); // Notifier l'adapter pour que la vue soit mise à jour
+                adapter.notifyDataSetChanged();
             }
             return true;
         });
@@ -208,9 +196,7 @@ public class ListFragment extends Fragment {
                         adapter = new RestaurationAdapter(getContext(), list);
                         listView.setAdapter(adapter);
 
-                        // Appliquer les filtres sur la nouvelle liste de restaurants
                         filterRestaurants();
-
 
                     } else {
                         Toast.makeText(getContext(), "Aucun restaurant trouvé", Toast.LENGTH_SHORT).show();
@@ -278,8 +264,7 @@ public class ListFragment extends Fragment {
         boolean filterIceCream = getFilterPreference("filter_iceCream");
         boolean filterAll = getFilterPreference("filter_all");
 
-        // Créer une nouvelle liste de restaurants filtrés
-        List<Restaurant> filteredRestaurants = new ArrayList<>();
+         List<Restaurant> filteredRestaurants = new ArrayList<>();
 
         for (Restaurant restaurant : list) {
             if ((filterCafe && "cafe".equals(restaurant.getType())) ||
@@ -298,7 +283,6 @@ public class ListFragment extends Fragment {
         adapter.updateList(filteredRestaurants);
     }
 
-    // Méthode pour récupérer la préférence du filtre depuis SharedPreferences
     private boolean getFilterPreference(String key) {
         SharedPreferences preferences = getActivity().getSharedPreferences("restaurant_filters", Context.MODE_PRIVATE);
         return preferences.getBoolean(key, false); // valeur par défaut "false"

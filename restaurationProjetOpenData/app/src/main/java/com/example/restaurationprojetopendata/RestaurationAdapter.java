@@ -3,7 +3,6 @@ package com.example.restaurationprojetopendata;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurationAdapter extends BaseAdapter {
-    private final ArrayList<Restaurant> list; // Liste des restaurants
-    private final Context context; // Contexte de l'application
+    private final ArrayList<Restaurant> list;
+    private final Context context;
 
     public RestaurationAdapter(Context context, ArrayList<Restaurant> list) {
         this.list = list;
@@ -43,25 +42,22 @@ public class RestaurationAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            // Création de la vue si elle n'existe pas encore
-            LayoutInflater mInflater = LayoutInflater.from(context);
+             LayoutInflater mInflater = LayoutInflater.from(context);
             convertView = mInflater.inflate(R.layout.item_restauration_adapter, parent, false);
 
-            // Initialisation du ViewHolder pour stocker les références des composants
-            holder = new ViewHolder();
+             holder = new ViewHolder();
             holder.tvName = convertView.findViewById(R.id.tvName);
             holder.tvHoraire = convertView.findViewById(R.id.tvHoraire);
             holder.ivProfile = convertView.findViewById(R.id.ivPhoto);
             holder.tvType = convertView.findViewById(R.id.tvType);
             holder.ivFavorite = convertView.findViewById(R.id.ivFavorite);
 
-            convertView.setTag(holder); // Stocke le ViewHolder dans la vue
+            convertView.setTag(holder);
         } else {
-            // Réutilisation du ViewHolder déjà existant
+
             holder = (ViewHolder) convertView.getTag();
         }
 
-        // Récupération des données du restaurant à la position actuelle
         Restaurant restaurant = list.get(i);
         String nom = restaurant.getName() != null ? restaurant.getName() : "Nom inconnu";
         String type = restaurant.getType() != null ? restaurant.getType() : "Type inconnu";
@@ -91,7 +87,6 @@ public class RestaurationAdapter extends BaseAdapter {
             holder.ivProfile.setImageResource(R.drawable.ic_launcher_background);
         }
 
-        // Remplissage des vues avec les données du restaurant
         holder.tvName.setText(nom);
         holder.tvHoraire.setText(horaire);
         holder.tvType.setText(type);
@@ -112,7 +107,7 @@ public class RestaurationAdapter extends BaseAdapter {
         if (mainActivity != null) {
             for (int i = 0; i < mainActivity.getFavorites().size(); i++) {
                 if (mainActivity.getFavorites().get(i).getName().equals(restaurant.getName())) {
-                    return mainActivity.getFavorites().get(i).getName().equals(restaurant.getName()); // Vérifie si le restaurant est dans les favoris
+                    return mainActivity.getFavorites().get(i).getName().equals(restaurant.getName());
                 }
             }
         }
@@ -122,15 +117,11 @@ public class RestaurationAdapter extends BaseAdapter {
 
 
     public void updateList(List<Restaurant> newRestaurants) {
-        // Remplacer la liste existante par la nouvelle liste
         list.clear();
         list.addAll(newRestaurants);
-
-        // Notifier l'adapter que les données ont changé, pour que l'affichage soit mis à jour
         notifyDataSetChanged();
     }
 
-    // ViewHolder : optimise la gestion des vues pour éviter les appels répétitifs à findViewById()
     static class ViewHolder {
         ImageView ivFavorite;
         TextView tvName;  // Nom du restaurant
